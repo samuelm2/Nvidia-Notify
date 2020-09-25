@@ -68,9 +68,9 @@ if NOTIFY_MAC:
     import os
 else:
     from win10toast import ToastNotifier
+    toast = ToastNotifier()
 
 ### END OF CONFIG SECTION -----------------------------------------------------
-
 
 options = Options()
 options.headless = True
@@ -83,7 +83,7 @@ def alert(url):
     print(url)
     webbrowser.open(url, new=1)
     if NOTIFY_MAC:
-        mac_alert("3080 IN STOCK", url)
+        mac_alert("{} IN STOCK".format(product), url)
     else:
         toast.show_toast("{} IN STOCK".format(product), url, duration=5, icon_path="icon.ico")
     if USE_TWILIO:
@@ -108,7 +108,7 @@ def mac_alert(title, text):
               osascript -e 'display notification "{}" with title "{}"'
               """.format(text, title))
     os.system('afplay /System/Library/Sounds/Glass.aiff')
-    os.system('say "3080 In Stock"')
+    os.system('say "{}"'.format(title))
     return
 
 def selenium_get(url):

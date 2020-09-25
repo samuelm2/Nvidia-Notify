@@ -17,37 +17,46 @@ Simple, quick to set up stock notification bot for Nvidia 3080 that I used to ge
 	-	twilioAuth
 	-	twilioSid
 3. pip install any dependencies you don't have
-	-  `pip install twilio`
+	- `pip install twilio`
 	- `pip install selenium`
 	- `pip install win10toast` (Windows 10 users only)
 ## How to Run
-
-### Windows
 
 ```
 python notifier.py
 ```
 
-### MacOS
+### MacOS Troubleshooting
 
-#### If Python 3 is installed as `python` on your path:
+Make sure you have `NOTIFY_MAC` in the config section set to true
+
+##### MacOS Python3 Info
+
+MacOS typically has Python 2 installed on the path as `python` by default. If you do not have Python 3 on your system, 
+the easiest way to install is to get it from HomeBrew (https://brew.sh/)
+
+Once you have brew installed, you can install Python 3 by running this:
 
 ```
-python notifier-mac.py
+brew install python3
 ```
 
-#### If Python 3 is installed as `python3` on your path:
+When installed in this way, you will normally need to run it as `python3` instead of `python` 
 
 ```
-python3 notifier-mac.py
+python3 notifier.py
 ```
 
-*Important* If you are using python3 then you will probably need to install your pip dependencies with pip3 instead of pip like so:
+You will also need to install your pip dependencies with pip3 instead of pip like so:
 
 ```
 pip3 install twilio
 ```
 
 Do this for all the pip dependencies
+
+##### MacOS Gecko Driver Security
+
+The first time you run this script on a mac, the system will prevent you from using the gecko driver.  To allow this, open System Preferences > Security and Privacy and under the general tab, click the button to allow geckodriver to be run.  You will need to run the script at least once before you can do this.  The first time you run the script after allowing geckodriver the script will crash again, but it will not crash after that. 
 
 ## Feel free to submit any PRs or issues!!  
