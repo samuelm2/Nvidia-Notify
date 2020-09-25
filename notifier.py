@@ -40,8 +40,8 @@ firefoxWebdriverExecutablePath = r'INSERT EXECUTABLE PATH HERE'
 
 # If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
 # Both of these numbers should be strings, in the format '+11234567890' (Not that it includes country code)
-twilioToNumber = '## INSERT THE PHONE NUMBER YOU WANT TO BE NOTIFIED FROM HERE ##'
-twilioFromNumber = '## INSERT THE PHONE NUMBER ON YOUR TWILIO ACCOUNT HERE ##'
+twilioToNumber = '+12223334444'
+twilioFromNumber = '+15556667777'
 twilioSid =  '## INSERT TWILIO SID HERE ##'
 twilioAuth = '## INSERT TWILIO AUTH HERE ##'
 client = Client(twilioSid, twilioAuth)
