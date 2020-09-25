@@ -1,4 +1,6 @@
 from urllib.request import urlopen, Request
+import json
+import requests
 from win10toast import ToastNotifier
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -7,9 +9,6 @@ import webbrowser
 import time
 import random
 from datetime import datetime
-
-from twilio.rest import Client
-
 
 '''
 Template for adding a new website to check:
@@ -37,14 +36,10 @@ urlKeyWords = {
 # Download the geckodriver from https://github.com/mozilla/geckodriver/releases, and then put the path to the executable in this rstring.
 # I used version 0.27.0
 firefoxWebdriverExecutablePath = r'INSERT EXECUTABLE PATH HERE'
+discordWebhookUrl = "INSERT WEBHOOK URL HERE"
 
 # If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
 # Both of these numbers should be strings, in the format '+11234567890' (Not that it includes country code)
-twilioToNumber = '+12223334444'
-twilioFromNumber = '+15556667777'
-twilioSid =  '## INSERT TWILIO SID HERE ##'
-twilioAuth = '## INSERT TWILIO AUTH HERE ##'
-client = Client(twilioSid, twilioAuth)
 
 
 options = Options()
@@ -53,13 +48,26 @@ toast = ToastNotifier()
 driver = webdriver.Firefox(options=options, executable_path=firefoxWebdriverExecutablePath)
 numReloads = 0
 
+
 def alert(url):
     print("3080 IN STOCK")
     print(url)
     webbrowser.open(url, new=1)
     toast.show_toast("3080 IN STOCK", url, duration=5, icon_path="icon.ico")
-    message = client.messages.create(to=twilioToNumber, from_=twilioFromNumber, body=url)
+    data = {}
+    # for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
+    data["content"] = "3080 in stock at {0}".format(url)
+    data["username"] = "In Stock Alert!"
+    result = requests.post(discordWebhookUrl, data=json.dumps(data), headers={"Content-Type": "application/json"})
+
+    try:
+        result.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    else:
+        print("Payload delivered successfully, code {}.".format(result.status_code))
     time.sleep(60)
+
 
 def seleniumGet(url):
     # for jsp sites
@@ -78,6 +86,7 @@ def seleniumGet(url):
         driver = webdriver.Firefox(options=options, executable_path=firefoxWebdriverExecutablePath)
     return http
 
+
 def urllibGet(url):
     # for regular sites
     # Fake a Firefox client
@@ -86,6 +95,7 @@ def urllibGet(url):
     html_bytes = page.read()
     html = html_bytes.decode("utf-8")
     return html
+
 
 def main():
     numSearches = 0
