@@ -1,5 +1,4 @@
 from urllib.request import urlopen, Request
-from win10toast import ToastNotifier
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
@@ -33,6 +32,7 @@ The Value is a tuple of size 4 with the following values:
 
 USE_TWILIO = True
 USE_DISCORD = True
+NOTIFY_MAC = False
 
 urlKeyWords = {
     "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/" : ("https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481700", False, GET_API, 'Nvidia 3080', ),
@@ -64,12 +64,16 @@ if USE_TWILIO:
     twilioAuth = '## INSERT TWILIO AUTH HERE ##'
     client = Client(twilioSid, twilioAuth)
 
-### END OF CONFIG SECTION -----------------------------------------------------
+if NOTIFY_MAC:
+    import os
+else:
+    from win10toast import ToastNotifier
+    toast = ToastNotifier()
 
+### END OF CONFIG SECTION -----------------------------------------------------
 
 options = Options()
 options.headless = True
-toast = ToastNotifier()
 driver = webdriver.Firefox(options=options, executable_path=firefoxWebdriverExecutablePath)
 numReloads = 0
 
@@ -78,7 +82,10 @@ def alert(url):
     print("{} IN STOCK".format(product))
     print(url)
     webbrowser.open(url, new=1)
-    toast.show_toast("{} IN STOCK".format(product), url, duration=5, icon_path="icon.ico")
+    if NOTIFY_MAC:
+        mac_alert("{} IN STOCK".format(product), url)
+    else:
+        toast.show_toast("{} IN STOCK".format(product), url, duration=5, icon_path="icon.ico")
     if USE_TWILIO:
         message = client.messages.create(to=twilioToNumber, from_=twilioFromNumber, body=url)
     if USE_DISCORD:
@@ -95,6 +102,14 @@ def alert(url):
         else:
             print("Payload delivered successfully, code {}.".format(result.status_code))
     time.sleep(60)
+
+def mac_alert(title, text):
+    os.system("""
+              osascript -e 'display notification "{}" with title "{}"'
+              """.format(text, title))
+    os.system('afplay /System/Library/Sounds/Glass.aiff')
+    os.system('say "{}"'.format(title))
+    return
 
 def selenium_get(url):
     # for jsp sites
