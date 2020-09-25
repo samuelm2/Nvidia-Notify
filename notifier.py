@@ -126,7 +126,7 @@ def nvidia_get(url, api_url):
     response = requests.get(api_url)
     item = response.json()
 
-    print(item['products']['product'][0]['inventoryStatus']['status'])
+    # print(item['products']['product'][0]['inventoryStatus']['status'])
     if item['products']['product'][0]['inventoryStatus']['status'] != "PRODUCT_INVENTORY_OUT_OF_STOCK":
         alert(url)
 
