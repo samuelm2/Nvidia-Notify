@@ -30,8 +30,8 @@ urlKeyWords = {
     "https://www.bhphotovideo.com/c/search?q=3080&filters=fct_category%3Agraphic_cards_6567" : ("Add to Cart", True, False, 'BandH'),
     "https://www.bestbuy.com/site/searchpage.jsp?st=3080" : ("cart.svg", True, True, "BestBuy"),
     # "https://www.bestbuy.com/site/searchpage.jsp?st=tv" : ("cart.svg", True, True, "BestBuyTest")
-    "https://www.amazon.com/stores/page/6B204EA4-AAAC-4776-82B1-D7C3BD9DDC82?ingress=0" : (">Add to Cart<", True, False, 'Amazon'),
-    "https://store.asus.com/us/item/202009AM160000001" : (">Buy Now<", True, False, 'ASUS')
+    "https://www.amazon.com/stores/page/6B204EA4-AAAC-4776-82B1-D7C3BD9DDC82?ingress=0" : (">Add to Cart<", True, False, 'Amazon')
+    # "https://store.asus.com/us/item/202009AM160000001" : (">Buy Now<", True, False, 'ASUS')
 }
 
 # Download the geckodriver from https://github.com/mozilla/geckodriver/releases, and then put the path to the executable in this rstring.
