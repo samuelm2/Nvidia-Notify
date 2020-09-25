@@ -19,8 +19,35 @@ Simple, quick to set up stock notification bot for Nvidia 3080 that I used to ge
 3. pip install any dependencies you don't have
 	-  `pip install twilio`
 	- `pip install selenium`
-	- `pip install win10toast`
+	- `pip install win10toast` (Windows 10 users only)
 ## How to Run
-`python notifier.py`
+
+### Windows
+
+```
+python notifier.py
+```
+
+### MacOS
+
+#### If Python 3 is installed as `python` on your path:
+
+```
+python notifier-mac.py
+```
+
+#### If Python 3 is installed as `python3` on your path:
+
+```
+python3 notifier-mac.py
+```
+
+*Important* If you are using python3 then you will probably need to install your pip dependencies with pip3 instead of pip like so:
+
+```
+pip3 install twilio
+```
+
+Do this for all the pip dependencies
 
 ## Feel free to submit any PRs or issues!!  
