@@ -52,7 +52,7 @@ urlKeyWords = {
 firefoxWebdriverExecutablePath = r'INSERT EXECUTABLE PATH HERE'
 
 # If you want to send alerts to discord via webhooks, place the webhook URL here
-if USE_DISCORD
+if USE_DISCORD:
     discordWebhookUrl = "INSERT DISCORD WEBHOOK URL HERE"
 
 # If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
