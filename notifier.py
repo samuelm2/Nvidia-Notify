@@ -61,7 +61,7 @@ if USE_DISCORD:
 # If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
 # Both of these numbers should be strings, in the format '+11234567890' (Not that it includes country code)
 if USE_TWILIO:
-twilioToNumber = getenv('TWILIOTONUM') 
+    twilioToNumber = getenv('TWILIOTONUM') 
     twilioFromNumber = getenv('TWILIOFROMNUM') 
     twilioSid =  getenv('TWILIOSID') 
     twilioAuth = getenv('TWILIOAUTH') 
