@@ -1,1 +1,4 @@
 .env
+geckodriver.log
+.idea/
+notifier-test.py
