@@ -143,7 +143,7 @@ def main():
             try:
                 if info[2] == GET_SELENIUM:
                     html = selenium_get(url)
-                if info[2] == GET_API:
+                elif info[2] == GET_API:
                     if 'nvidia' in info[3].lower():
                         nvidia_get(url, info[0])
                     continue
