@@ -3,7 +3,7 @@ Simple, quick to set up stock notification bot for Nvidia 3080 that I used to ge
 
 ## Requirements
 - Some version of python3 installed on your computer (https://www.python.org/downloads/)
-- pip to install the dependencies (https://pip.pypa.io/en/stable/reference/pip_download/)
+- pip to install the dependencies (https://pip.pypa.io/en/stable/installing/)
 - A Twilio account (can be a trial account) (https://www.twilio.com/try-twilio)
 - geckodriver (a Firefox webdriver, I used version 0.27.0) (https://github.com/mozilla/geckodriver/releases)
 
