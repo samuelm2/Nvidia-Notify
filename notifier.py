@@ -4,9 +4,11 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 import webbrowser
-import time
+from time import sleep
 import random
-from datetime import datetime
+from datetime import datetime, time
+from dotenv import load_dotenv
+from os import path, getenv
 
 from twilio.rest import Client
 
@@ -22,6 +24,7 @@ The Value is a tuple of size 4 with the following values:
     2. If this is True, it will use Selenium/FireFox to get the HTML from the website. This is useful when a website is a jsx page instead of static HTML (ex. BestBuy).
     3. A nickname for the alert to use.
 '''
+load_dotenv()
 urlKeyWords = {
     "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/" : ("Out Of Stock", False, True, 'Nvidia'),
     "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+30+Series+Family&chipset=RTX+3080" : ("AddCart", True, False, 'EVGA'),
@@ -36,16 +39,15 @@ urlKeyWords = {
 
 # Download the geckodriver from https://github.com/mozilla/geckodriver/releases, and then put the path to the executable in this rstring.
 # I used version 0.27.0
-firefoxWebdriverExecutablePath = r'INSERT EXECUTABLE PATH HERE'
+firefoxWebdriverExecutablePath = path.normpath(getenv('WEBDRIVERPATH'))
 
 # If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
 # Both of these numbers should be strings, in the format '+11234567890' (Not that it includes country code)
-twilioToNumber = '+12223334444'
-twilioFromNumber = '+15556667777'
-twilioSid =  '## INSERT TWILIO SID HERE ##'
-twilioAuth = '## INSERT TWILIO AUTH HERE ##'
+twilioToNumber = getenv('TWILIOTONUM') 
+twilioFromNumber = getenv('TWILIOFROMNUM') 
+twilioSid =  getenv('TWILIOSID') 
+twilioAuth = getenv('TWILIOAUTH') 
 client = Client(twilioSid, twilioAuth)
-
 
 options = Options()
 options.headless = True
@@ -59,7 +61,7 @@ def alert(url):
     webbrowser.open(url, new=1)
     toast.show_toast("3080 IN STOCK", url, duration=5, icon_path="icon.ico")
     message = client.messages.create(to=twilioToNumber, from_=twilioFromNumber, body=url)
-    time.sleep(60)
+    sleep(60)
 
 def seleniumGet(url):
     # for jsp sites
@@ -117,7 +119,7 @@ def main():
         baseSleepAmt = 1
         totalSleep = baseSleepAmt + random.uniform(0, 10)
         # print("Sleeping for {} seconds".format(totalSleep))
-        time.sleep(totalSleep)
+        sleep(totalSleep)
 
 
 if __name__ == '__main__':

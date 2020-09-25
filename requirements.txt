@@ -1,0 +1,4 @@
+twilio
+python-dotenv
+selenium
+win10toast
