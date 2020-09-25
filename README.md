@@ -1,5 +1,5 @@
 # Nvidia-Notify
-Stock notification bot for Nvidia 3080
+Simple, quick to set up stock notification bot for Nvidia 3080 that I used to get my 3080. Less than 150 lines of code.
 
 ## Requirements
 - Some version of python3 installed on your computer (https://www.python.org/downloads/)
