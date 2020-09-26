@@ -168,8 +168,8 @@ def main():
                 else:
                     html = urllib_get(url)
             except Exception as e:
-                print("Connection failed...")
-                print(e)
+                print("\t\tConnection failed...")
+                print("\t\t{}".format(e))
                 continue
             keyWord = info[0]
             alertOnFound = info[1]
