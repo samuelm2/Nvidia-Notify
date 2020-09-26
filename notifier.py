@@ -1,24 +1,25 @@
+from os import path, getenv, system
 from urllib.request import urlopen, Request
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-
+import platform
 import json
-import requests
 import webbrowser
 from time import sleep
 import random
 from datetime import datetime, time
+
 from dotenv import load_dotenv
-from os import path, getenv
+import requests
 
-from twilio.rest import Client
-
+platform = platform.system()
+PLT_WIN = "Windows"
+PLT_LIN = "Linux"
+PLT_MAC = "Darwin"
 GET_SELENIUM = 0
 GET_URLLIB = 1
 GET_API = 2
 
 
-### CONFIG SECTION BELOW ------------------------------------------------------
+# CONFIG SECTION BELOW --------------------------------------------------------
 
 '''
 Template for adding a new website to check:
@@ -31,105 +32,130 @@ The Value is a tuple of size 4 with the following values:
     2. Set this to GET_SELENIUM, GET_URLLIB, or GET_API to choose which method is used to fetch data from the site. USE_SELENIUM is useful for jsx pages.
     3. A nickname for the alert to use. This is displayed in alerts.
 '''
-load_dotenv()
 
-USE_TWILIO = True
-USE_DISCORD = True
-NOTIFY_MAC = False
-
-urlKeyWords = {
-    "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/" : ("https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481700", False, GET_API, 'Nvidia 3080', ),
-    "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3090/" : ("https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481600,5443202600", False, GET_API, 'Nvidia 3090', ),
-    "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+30+Series+Family&chipset=RTX+3080" : ("AddCart", True, GET_URLLIB, 'EVGA 3080'),
-    # "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+16+Series+Family&chipset=GTX+1650+Super" : ("AddCart", True, GET_URLLIB, 'EVGATest'),
-    "https://www.newegg.com/p/pl?d=rtx+3080&N=100007709%20601357247" : ("Add to cart", True, GET_URLLIB, 'Newegg 3080'),
-    "https://www.bhphotovideo.com/c/search?q=3080&filters=fct_category%3Agraphic_cards_6567" : ("Add to Cart", True, GET_URLLIB, 'BandH 3080'),
-    "https://www.bestbuy.com/site/searchpage.jsp?st=3080" : ("cart.svg", True, GET_SELENIUM, "BestBuy"),
-    # "https://www.bestbuy.com/site/searchpage.jsp?st=tv" : ("cart.svg", True, GET_SELENIUM, "BestBuyTest")
-    "https://www.amazon.com/stores/page/6B204EA4-AAAC-4776-82B1-D7C3BD9DDC82?ingress=0" : (">Add to Cart<", True, GET_URLLIB, 'Amazon 3080')
-    # "https://store.asus.com/us/item/202009AM160000001" : (">Buy Now<", True, GET_URLLIB, 'ASUS')
+url_keywords = {
+    "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/": ("https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481700", False, GET_API, 'Nvidia 3080', ),
+    "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3090/": ("https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481600,5443202600", False, GET_API, 'Nvidia 3090', ),
+    "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+30+Series+Family&chipset=RTX+3080": ("AddCart", True, GET_URLLIB, 'EVGA 3080'),
+    # "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+16+Series+Family&chipset=GTX+1650+Super": ("AddCart", True, GET_URLLIB, 'EVGATest'),
+    "https://www.newegg.com/p/pl?d=rtx+3080&N=100007709%20601357247": ("Add to cart", True, GET_URLLIB, 'Newegg 3080'),
+    "https://www.bhphotovideo.com/c/search?q=3080&filters=fct_category%3Agraphic_cards_6567": ("Add to Cart", True, GET_URLLIB, 'BandH 3080'),
+    "https://www.bestbuy.com/site/searchpage.jsp?st=3080": ("cart.svg", True, GET_SELENIUM, "BestBuy 3080"),
+    # "https://www.bestbuy.com/site/searchpage.jsp?st=tv": ("cart.svg", True, GET_SELENIUM, "BestBuyTest")
+    "https://www.amazon.com/stores/page/6B204EA4-AAAC-4776-82B1-D7C3BD9DDC82?ingress=0": (">Add to Cart<", True, GET_URLLIB, 'Amazon 3080')
+    # "https://store.asus.com/us/item/202009AM160000001": (">Buy Now<", True, GET_URLLIB, 'ASUS')
 }
 
-# Download the geckodriver from https://github.com/mozilla/geckodriver/releases, and then put the path to the executable in this rstring.
-# I used version 0.27.0
-firefoxWebdriverExecutablePath = path.normpath(getenv('WEBDRIVERPATH'))
+# END OF CONFIG SECTION -------------------------------------------------------
 
-# If you want to send alerts to discord via webhooks, place the webhook URL here
-if USE_DISCORD:
-    discordWebhookUrl = "INSERT DISCORD WEBHOOK URL HERE"
 
-# If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
-# Both of these numbers should be strings, in the format '+11234567890' (Not that it includes country code)
-if USE_TWILIO:
-    twilioToNumber = getenv('TWILIOTONUM') 
-    twilioFromNumber = getenv('TWILIOFROMNUM') 
-    twilioSid =  getenv('TWILIOSID') 
-    twilioAuth = getenv('TWILIOAUTH') 
-    client = Client(twilioSid, twilioAuth)
+# Set up environment variables and constants. Do not modify this unless you know what you are doing!
+load_dotenv()
+USE_TWILIO = False
+USE_SELENIUM = False
+USE_DISCORD_HOOK = False
+WEBDRIVER_PATH = path.normpath(getenv('WEBDRIVER_PATH'))
+DISCORD_WEBHOOK_URL = getenv('DISCORD_WEBHOOK_URL')
+TWILIO_TO_NUM = getenv('TWILIO_TO_NUM')
+TWILIO_FROM_NUM = getenv('TWILIO_FROM_NUM')
+TWILIO_SID = getenv('TWILIO_SID')
+TWILIO_AUTH = getenv('TWILIO_AUTH')
+ALERT_DELAY = int(getenv('ALERT_DELAY'))
+MIN_DELAY = int(getenv('MIN_DELAY'))
+MAX_DELAY = int(getenv('MAX_DELAY'))
 
-if NOTIFY_MAC:
-    import os
-else:
+# Selenium Setup
+if WEBDRIVER_PATH:
+    USE_SELENIUM = True
+    print("Enabling Selenium... ", end='')
+    from selenium import webdriver
+    from selenium.webdriver.firefox.options import Options
+    options = Options()
+    options.headless = True
+    driver = webdriver.Firefox(options=options, executable_path=WEBDRIVER_PATH)
+    reload_count = 0
+    print("Done!")
+
+# Twilio Setup
+if TWILIO_TO_NUM and TWILIO_FROM_NUM and TWILIO_SID and TWILIO_AUTH:
+    USE_TWILIO = True
+    print("Enabling Twilio... ", end='')
+    from twilio.rest import Client
+    client = Client(TWILIO_SID, TWILIO_AUTH)
+    print("Done!")
+
+# Discord Setup
+if DISCORD_WEBHOOK_URL:
+    USE_DISCORD_HOOK = True
+    print('Enabled Discord Web Hook.')
+
+# Platform specific settings
+print("Running on {}".format(platform))
+if platform == PLT_WIN:
     from win10toast import ToastNotifier
     toast = ToastNotifier()
 
-### END OF CONFIG SECTION -----------------------------------------------------
-
-options = Options()
-options.headless = True
-driver = webdriver.Firefox(options=options, executable_path=firefoxWebdriverExecutablePath)
-numReloads = 0
 
 def alert(url):
-    product = urlKeyWords[url][3]
+    product = url_keywords[url][3]
     print("{} IN STOCK".format(product))
     print(url)
     webbrowser.open(url, new=1)
-    if NOTIFY_MAC:
-        mac_alert("{} IN STOCK".format(product), url)
-    else:
-        toast.show_toast("{} IN STOCK".format(product), url, duration=5, icon_path="icon.ico")
-    if USE_TWILIO:
-        message = client.messages.create(to=twilioToNumber, from_=twilioFromNumber, body=url)
-    if USE_DISCORD:
-        data = {}
-        # for all params, see https://discordapp.com/developers/docs/resources/webhook#execute-webhook
-        data["content"] = "{} in stock at {}".format(product, url)
-        data["username"] = "In Stock Alert!"
-        result = requests.post(discordWebhookUrl, data=json.dumps(data), headers={"Content-Type": "application/json"})
+    os_notification("{} IN STOCK".format(product), url)
+    sms_notification()
+    discord_notification(product, url)
+    time.sleep(ALERT_DELAY)
 
+
+def os_notification(title, text):
+    if platform == PLT_MAC:
+        system("""
+                  osascript -e 'display notification "{}" with title "{}"'
+                  """.format(text, title))
+        system('afplay /System/Library/Sounds/Glass.aiff')
+        system('say "{}"'.format(title))
+    elif platform == PLT_WIN:
+        toast.show_toast(title, text, duration=5, icon_path="icon.ico")
+    elif platform == PLT_LIN:
+        # Feel free to add something here :)
+        pass
+
+
+def sms_notification():
+    if USE_TWILIO:
+        client.messages.create(to=TWILIO_TO_NUM, from_=TWILIO_FROM_NUM, body=url)
+
+
+def discord_notification(product, url):
+    if USE_DISCORD_HOOK:
+        data = {
+            "content": "{} in stock at {}".format(product, url),
+            "username": "In Stock Alert!"
+        }
+        result = requests.post(DISCORD_WEBHOOK_URL, data=json.dumps(data), headers={"Content-Type": "application/json"})
         try:
             result.raise_for_status()
         except requests.exceptions.HTTPError as err:
             print(err)
         else:
             print("Payload delivered successfully, code {}.".format(result.status_code))
-    time.sleep(60)
 
-def mac_alert(title, text):
-    os.system("""
-              osascript -e 'display notification "{}" with title "{}"'
-              """.format(text, title))
-    os.system('afplay /System/Library/Sounds/Glass.aiff')
-    os.system('say "{}"'.format(title))
-    return
 
 def selenium_get(url):
-    # for jsp sites
-    # test url : https://www.bestbuy.com/site/searchpage.jsp?st=3080
     global driver
-    global numReloads
+    global reload_count
 
     driver.get(url)
     http = driver.page_source
 
-    numReloads += 1
-    if numReloads == 10:
-        numReloads = 0
+    reload_count += 1
+    if reload_count == 10:
+        reload_count = 0
         driver.close()
         driver.quit()
-        driver = webdriver.Firefox(options=options, executable_path=firefoxWebdriverExecutablePath)
+        driver = webdriver.Firefox(options=options, executable_path=WEBDRIVER_PATH)
     return http
+
 
 def urllib_get(url):
     # for regular sites
@@ -140,26 +166,28 @@ def urllib_get(url):
     html = html_bytes.decode("utf-8")
     return html
 
-def nvidia_get(url, api_url):
-    response = requests.get(api_url)
-    item = response.json()
 
-    # print(item['products']['product'][0]['inventoryStatus']['status'])
+def nvidia_get(url, api_url):
+    response = requests.get(api_url, timeout=5)
+    item = response.json()
     if item['products']['product'][0]['inventoryStatus']['status'] != "PRODUCT_INVENTORY_OUT_OF_STOCK":
         alert(url)
 
+
 def main():
-    numSearches = 0
+    search_count = 0
     while True:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        print("Starting search {} at {}".format(numSearches, current_time))
-        numSearches += 1
-        for url, info in urlKeyWords.items():
+        print("Starting search {} at {}".format(search_count, current_time))
+        search_count += 1
+        for url, info in url_keywords.items():
             print("\tChecking {}...".format(info[3]))
 
             try:
                 if info[2] == GET_SELENIUM:
+                    if not USE_SELENIUM:
+                        continue
                     html = selenium_get(url)
                 elif info[2] == GET_API:
                     if 'nvidia' in info[3].lower():
@@ -171,18 +199,17 @@ def main():
                 print("\t\tConnection failed...")
                 print("\t\t{}".format(e))
                 continue
-            keyWord = info[0]
-            alertOnFound = info[1]
-            index = html.upper().find(keyWord.upper())
-            if alertOnFound and index != -1:
+            keyword = info[0]
+            alert_on_found = info[1]
+            index = html.upper().find(keyword.upper())
+            if alert_on_found and index != -1:
                 alert(url)
-            elif not alertOnFound and index == -1:
+            elif not alert_on_found and index == -1:
                 alert(url)
 
-        baseSleepAmt = 1
-        totalSleep = baseSleepAmt + random.uniform(1, 11)
-        # print("Sleeping for {} seconds".format(totalSleep))
-        sleep(totalSleep)
+        base_sleep = 1
+        total_sleep = base_sleep + random.uniform(MIN_DELAY, MAX_DELAY)
+        sleep(total_sleep)
 
 
 if __name__ == '__main__':
