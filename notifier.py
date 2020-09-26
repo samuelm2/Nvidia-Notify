@@ -102,9 +102,9 @@ def alert(url):
     print(url)
     webbrowser.open(url, new=1)
     os_notification("{} IN STOCK".format(product), url)
-    sms_notification()
+    sms_notification(url)
     discord_notification(product, url)
-    time.sleep(ALERT_DELAY)
+    sleep(ALERT_DELAY)
 
 
 def os_notification(title, text):
@@ -121,7 +121,7 @@ def os_notification(title, text):
         pass
 
 
-def sms_notification():
+def sms_notification(url):
     if USE_TWILIO:
         client.messages.create(to=TWILIO_TO_NUM, from_=TWILIO_FROM_NUM, body=url)
 
