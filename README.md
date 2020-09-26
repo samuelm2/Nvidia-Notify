@@ -1,24 +1,28 @@
 # Nvidia-Notify
-Simple, quick to set up stock notification bot for Nvidia 3080 that I used to get my 3080. Less than 150 lines of code.
+Simple, quick to set up stock notification bot for Nvidia 3080 that I used to get my 3080. Less than 250 lines of code.
 
 ## Requirements
-- Firefox (https://www.mozilla.org/en-US/firefox/download/thanks/)
-- Some version of python3 installed on your computer (https://www.python.org/downloads/)
-- pip to install the dependencies (https://pip.pypa.io/en/stable/installing/)
-- A Twilio account (can be a trial account) (https://www.twilio.com/try-twilio)
-- geckodriver (a Firefox webdriver, I used version 0.27.0) (https://github.com/mozilla/geckodriver/releases)
+- [Firefox](https://www.mozilla.org/en-US/firefox/download/thanks/)
+- [Python 3](https://www.python.org/downloads/) (not python 2.x!)
+- [pip](https://pip.pypa.io/en/stable/installing/) (to handle installing dependencies)
+- [geckodriver](https://github.com/mozilla/geckodriver/releases) (a Firefox webdriver, I used version 0.27.0)
+
+## Optional Components
+- SMS Support: [A Twilio account](https://www.twilio.com/try-twilio) (can be a trial account)
+- Discord Notifications via Webhooks: [Discord Webhook guide here](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
 ## How to set up
 1. Clone/Download the notifier.py file and the icon.ico file and put them in the same folder
-2. Open the .env file in a text editor and fill in the variables, without adding spaces or quotes.
-	-	firefoxWebdriverExecutablePath -> full path to your downloaded gecko driver (shift right click and copy as path on windows)
-	-	twilioToNumber -> phone number to send notification to
-	-	twilioFromNumber -> twilio number generated that will send notifications
-	-	twilioAuth -> twilio auth code for your account
-	-	twilioSid -> twilio sid for your account
-3. pip install dependencies
+2. Download geckodriver
+3. Open the .env file in a text editor and fill in the variables.
+    -   Windows users can place `geckodriver.exe` in the same folder as the script. Otherwise, update `WEBDRIVER_PATH`
+	-	refer to the .env file for instructions on specific values.
+	-   Many features are optional, you can leave them blank if you don't want to use them.
+4. pip install dependencies
 	-  `pip install -r requirements.txt` or `python -m pip install -r requirements.txt`
-  - If not running on Windows 10, remove the win10toast from requirements, or ignore it if it fails to install
+    - If running windows, use `win-requirements.txt` instead.
+    - On some Linux/Mac systems, you may need to use `python3` and `pip3` instead of `python` and `pip`, respectively.
+5. You can open `notifier.py` in a text editor and modify the list of pages that get scanned.
   
 ## How to Run
 
@@ -26,9 +30,10 @@ Simple, quick to set up stock notification bot for Nvidia 3080 that I used to ge
 python notifier.py
 ```
 
-### MacOS Troubleshooting
-
-Make sure you have `NOTIFY_MAC` in the config section set to true
+Note that on some linux and mac systems, you may have to use the following instead:
+```
+python3 notifier.py
+```
 
 ##### MacOS Python3 Info
 
@@ -50,11 +55,9 @@ python3 notifier.py
 You will also need to install your pip dependencies with pip3 instead of pip like so:
 
 ```
-pip3 install twilio
 pip3 install -r requirements.txt
 ```
 
-Do this for all the pip dependencies
 
 ##### MacOS Gecko Driver Security
 
