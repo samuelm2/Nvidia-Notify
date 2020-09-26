@@ -1,4 +1,6 @@
+.idea/
 .env
 geckodriver.log
-.idea/
 notifier-test.py
+geckdriver
+geckodriver.exe
