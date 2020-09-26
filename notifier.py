@@ -5,9 +5,11 @@ from selenium.webdriver.firefox.options import Options
 import json
 import requests
 import webbrowser
-import time
+from time import sleep
 import random
-from datetime import datetime
+from datetime import datetime, time
+from dotenv import load_dotenv
+from os import path, getenv
 
 from twilio.rest import Client
 
@@ -29,6 +31,7 @@ The Value is a tuple of size 4 with the following values:
     2. Set this to GET_SELENIUM, GET_URLLIB, or GET_API to choose which method is used to fetch data from the site. USE_SELENIUM is useful for jsx pages.
     3. A nickname for the alert to use. This is displayed in alerts.
 '''
+load_dotenv()
 
 USE_TWILIO = True
 USE_DISCORD = True
@@ -49,7 +52,7 @@ urlKeyWords = {
 
 # Download the geckodriver from https://github.com/mozilla/geckodriver/releases, and then put the path to the executable in this rstring.
 # I used version 0.27.0
-firefoxWebdriverExecutablePath = r'INSERT EXECUTABLE PATH HERE'
+firefoxWebdriverExecutablePath = path.normpath(getenv('WEBDRIVERPATH'))
 
 # If you want to send alerts to discord via webhooks, place the webhook URL here
 if USE_DISCORD:
@@ -58,10 +61,10 @@ if USE_DISCORD:
 # If you want text notifications, you'll need to have a Twilio account set up (Free Trial is fine)
 # Both of these numbers should be strings, in the format '+11234567890' (Not that it includes country code)
 if USE_TWILIO:
-    twilioToNumber = '+12223334444'
-    twilioFromNumber = '+15556667777'
-    twilioSid =  '## INSERT TWILIO SID HERE ##'
-    twilioAuth = '## INSERT TWILIO AUTH HERE ##'
+    twilioToNumber = getenv('TWILIOTONUM') 
+    twilioFromNumber = getenv('TWILIOFROMNUM') 
+    twilioSid =  getenv('TWILIOSID') 
+    twilioAuth = getenv('TWILIOAUTH') 
     client = Client(twilioSid, twilioAuth)
 
 if NOTIFY_MAC:
@@ -179,7 +182,7 @@ def main():
         baseSleepAmt = 1
         totalSleep = baseSleepAmt + random.uniform(1, 11)
         # print("Sleeping for {} seconds".format(totalSleep))
-        time.sleep(totalSleep)
+        sleep(totalSleep)
 
 
 if __name__ == '__main__':
