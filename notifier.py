@@ -63,6 +63,7 @@ TWILIO_AUTH = getenv('TWILIO_AUTH')
 ALERT_DELAY = int(getenv('ALERT_DELAY'))
 MIN_DELAY = int(getenv('MIN_DELAY'))
 MAX_DELAY = int(getenv('MAX_DELAY'))
+OPEN_WEB_BROWSER = getenv('OPEN_WEB_BROWSER') == 'true'
 
 # Selenium Setup
 if WEBDRIVER_PATH:
@@ -100,7 +101,8 @@ def alert(url):
     product = url_keywords[url][3]
     print("{} IN STOCK".format(product))
     print(url)
-    webbrowser.open(url, new=1)
+    if OPEN_WEB_BROWSER:
+        webbrowser.open(url, new=1)
     os_notification("{} IN STOCK".format(product), url)
     sms_notification(url)
     discord_notification(product, url)
