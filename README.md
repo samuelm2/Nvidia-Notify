@@ -10,13 +10,13 @@ Simple, quick to set up stock notification bot for Nvidia 3080 that I used to ge
 
 ## How to set up
 1. Clone/Download the notifier.py file and the icon.ico file and put them in the same folder
-2. Open the .env and fill in the variables, without adding spaces or quotes.
+2. Open the .env file in a text editor and fill in the variables, without adding spaces or quotes.
 	-	firefoxWebdriverExecutablePath -> full path to your downloaded gecko driver (shift right click and copy as path on windows)
 	-	twilioToNumber -> phone number to send notification to
 	-	twilioFromNumber -> twilio number generated that will send notifications
 	-	twilioAuth -> twilio auth code for your account
 	-	twilioSid -> twilio sid for your account
-3. pip install dependancies
+3. pip install dependencies
 	-  `pip install -r requirements.txt` or `python -m pip install -r requirements.txt`
   - If not running on Windows 10, remove the win10toast from requirements, or ignore it if it fails to install
   
