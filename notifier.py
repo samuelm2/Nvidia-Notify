@@ -2,12 +2,12 @@ import json
 import platform
 import random
 import webbrowser
-from datetime import datetime
+from datetime import datetime, time
 from os import path, getenv, system
 from time import sleep
 from urllib.request import urlopen, Request
 from enum import Enum
-
+import sys
 import requests
 from dotenv import load_dotenv
 
@@ -49,6 +49,10 @@ TWILIO_AUTH = getenv('TWILIO_AUTH')
 ALERT_DELAY = int(getenv('ALERT_DELAY'))
 MIN_DELAY = int(getenv('MIN_DELAY'))
 MAX_DELAY = int(getenv('MAX_DELAY'))
+OPEN_WEB_BROWSER = getenv('OPEN_WEB_BROWSER') == 'true'
+
+with open('sites.json', 'r') as f:
+    sites = json.load(f)
 
 # Selenium Setup
 if WEBDRIVER_PATH:
@@ -89,7 +93,8 @@ def alert(site):
     product = site.get('name')
     print("{} IN STOCK".format(product))
     print(site.get('url'))
-    webbrowser.open(site.get('url'), new=1)
+    if OPEN_WEB_BROWSER:
+        webbrowser.open(site.get('url'), new=1)
     os_notification("{} IN STOCK".format(product), site.get('url'))
     sms_notification(site.get('url'))
     discord_notification(product, site.get('url'))
@@ -163,12 +168,18 @@ def nvidia_get(url, api_url):
         alert(url)
 
 
-with open('sites.json', 'r') as f:
-    sites = json.load(f)
+def is_test():
+    if sys.argv[1] == 'test':
+        alert("https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/")
+        print("Test complete, if you received notification, you're good to go.")
+        return True
 
 
 def main():
     search_count = 0
+    
+    exit() if is_test() else False
+
     while True:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
