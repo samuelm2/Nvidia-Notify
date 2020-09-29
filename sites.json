@@ -1,0 +1,76 @@
+[
+  {
+    "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/",
+    "api": "https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481700",
+    "keyword": "",
+    "alert": false,
+    "method": "GET_API",
+    "name": "Nvidia 3080",
+    "enabled": true
+  },
+  {
+    "url": "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3090/",
+    "api": "https://api-prod.nvidia.com/direct-sales-shop/DR/products/en_us/USD/5438481600,5443202600",
+    "keyword": "",
+    "alert": false,
+    "method": "GET_API",
+    "name": "Nvidia 3090",
+    "enabled": true
+  },
+  {
+    "url": "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+16+Series+Family&chipset=GTX+1650+Super",
+    "keyword": "AddCart",
+    "alert": true,
+    "method": "GET_URLLIB",
+    "name": "EVGATest",
+    "enabled": false
+  },
+  {
+    "url": "https://www.newegg.com/p/pl?d=rtx+3080&N=100007709%20601357247",
+    "keyword": "Add to cart",
+    "alert": true,
+    "method": "GET_URLLIB",
+    "name": "Newegg 3080",
+    "enabled": true
+  },
+  {
+    "url": "https://www.bhphotovideo.com/c/search?q=3080&filters=fct_category%3Agraphic_cards_6567",
+    "keyword": "Add to Cart",
+    "alert": true,
+    "method": "GET_URLLIB",
+    "name": "BandH 3080",
+    "enabled": true
+  },
+  {
+    "url": "https://www.bestbuy.com/site/searchpage.jsp?st=3080",
+    "keyword": "cart.svg",
+    "alert": true,
+    "method": "GET_SELENIUM",
+    "name": "BestBuy 3080",
+    "enabled": true
+  },
+  {
+    "url": "https://www.bestbuy.com/site/searchpage.jsp?st=tv",
+    "keyword": "cart.svg",
+    "alert": true,
+    "method": "GET_SELENIUM",
+    "name": "BestBuyTest",
+    "enabled": false
+  },
+  {
+    "url": "https://www.amazon.com/stores/page/6B204EA4-AAAC-4776-82B1-D7C3BD9DDC82?ingress=0",
+    "keyword": ">Add to Cart<",
+    "alert": true,
+    "method": "GET_URLLIB",
+    "name": "Amazon 3080",
+    "enabled": true
+  },
+  {
+    "url": "https://store.asus.com/us/item/202009AM160000001",
+    "keyword": ">Buy Now<",
+    "alert": true,
+    "method": "GET_URLLIB",
+    "name": "ASUS",
+    "enabled": false
+  }
+]
