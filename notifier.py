@@ -6,7 +6,7 @@ import webbrowser
 from time import sleep
 import random
 from datetime import datetime, time
-
+import sys
 from dotenv import load_dotenv
 import requests
 
@@ -176,8 +176,17 @@ def nvidia_get(url, api_url):
         alert(url)
 
 
+def is_test():
+    if sys.argv[1] == 'test':
+        alert("https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/")
+        print("Test complete, if you received notification, you're good to go.")
+        return True
+
 def main():
     search_count = 0
+    
+    exit() if is_test() else False
+
     while True:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
