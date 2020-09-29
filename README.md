@@ -37,7 +37,14 @@ Note that on some linux and mac systems, you may have to use the following inste
 python3 notifier.py
 ```
 
-##### MacOS Python3 Info
+## Testing if Notifications Work (Twilio/Discord)
+
+```
+python notifier.py test
+```
+*replace 'python' with 'python3' if that is how your system is configured*
+
+## MacOS Python3 Info
 
 MacOS typically has Python 2 installed on the path as `python` by default. If you do not have Python 3 on your system, 
 the easiest way to install is to get it from HomeBrew (https://brew.sh/)
