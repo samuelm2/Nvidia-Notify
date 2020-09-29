@@ -19,7 +19,6 @@
   },
   {
     "url": "https://www.evga.com/products/productlist.aspx?type=0&family=GeForce+16+Series+Family&chipset=GTX+1650+Super",
-    "api": "",
     "keyword": "AddCart",
     "alert": true,
     "method": "GET_URLLIB",
@@ -28,7 +27,6 @@
   },
   {
     "url": "https://www.newegg.com/p/pl?d=rtx+3080&N=100007709%20601357247",
-    "api": "",
     "keyword": "Add to cart",
     "alert": true,
     "method": "GET_URLLIB",
@@ -37,7 +35,6 @@
   },
   {
     "url": "https://www.bhphotovideo.com/c/search?q=3080&filters=fct_category%3Agraphic_cards_6567",
-    "api": "",
     "keyword": "Add to Cart",
     "alert": true,
     "method": "GET_URLLIB",
@@ -46,7 +43,6 @@
   },
   {
     "url": "https://www.bestbuy.com/site/searchpage.jsp?st=3080",
-    "api": "",
     "keyword": "cart.svg",
     "alert": true,
     "method": "GET_SELENIUM",
@@ -55,7 +51,6 @@
   },
   {
     "url": "https://www.bestbuy.com/site/searchpage.jsp?st=tv",
-    "api": "",
     "keyword": "cart.svg",
     "alert": true,
     "method": "GET_SELENIUM",
@@ -64,7 +59,6 @@
   },
   {
     "url": "https://www.amazon.com/stores/page/6B204EA4-AAAC-4776-82B1-D7C3BD9DDC82?ingress=0",
-    "api": "",
     "keyword": ">Add to Cart<",
     "alert": true,
     "method": "GET_URLLIB",
@@ -73,7 +67,6 @@
   },
   {
     "url": "https://store.asus.com/us/item/202009AM160000001",
-    "api": "",
     "keyword": ">Buy Now<",
     "alert": true,
     "method": "GET_URLLIB",

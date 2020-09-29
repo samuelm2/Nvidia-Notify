@@ -6,6 +6,7 @@ from datetime import datetime
 from os import path, getenv, system
 from time import sleep
 from urllib.request import urlopen, Request
+from enum import Enum
 
 import requests
 from dotenv import load_dotenv
@@ -15,13 +16,19 @@ PLT_WIN = "Windows"
 PLT_LIN = "Linux"
 PLT_MAC = "Darwin"
 
+class Methods(str, Enum):
+    GET_SELENIUM = "GET_SELENIUM"
+    GET_URLLIB = "GET_URLLIB"
+    GET_API = "GET_API"
+
+
 '''
     Adding a new website to check:
 
     sites.json
 
     [url]: url of the website you want to check
-    [api]: API URL for the site, if blank; keyword is required
+    [api]: API URL for the site, if omitted; keyword is required
     [keyword]: The substring that you're looking for in the html of the website
     [method]: Set this to GET_SELENIUM, GET_URLLIB, or GET_API to choose which method is used to fetch data from the site. USE_SELENIUM is useful for jsx pages
     [name]: A nickname for the alert to use. This is displayed in alerts.
@@ -79,13 +86,13 @@ if platform == PLT_WIN:
 
 
 def alert(site):
-    product = site['name']
+    product = site.get('name')
     print("{} IN STOCK".format(product))
-    print(site['url'])
-    webbrowser.open(site['url'], new=1)
-    os_notification("{} IN STOCK".format(product), site['url'])
-    sms_notification(site['url'])
-    discord_notification(product, site['url'])
+    print(site.get('url'))
+    webbrowser.open(site.get('url'), new=1)
+    os_notification("{} IN STOCK".format(product), site.get('url'))
+    sms_notification(site.get('url'))
+    discord_notification(product, site.get('url'))
     sleep(ALERT_DELAY)
 
 
@@ -168,26 +175,26 @@ def main():
         print("Starting search {} at {}".format(search_count, current_time))
         search_count += 1
         for site in sites:
-            if site['enabled']:
-                print("\tChecking {}...".format(site['name']))
+            if site.get('enabled'):
+                print("\tChecking {}...".format(site.get('name')))
 
                 try:
-                    if site['method'] == "GET_SELENIUM":
+                    if site.get('method') == Methods.GET_SELENIUM:
                         if not USE_SELENIUM:
                             continue
-                        html = selenium_get(site['url'])
-                    elif site['method'] == "GET_API":
-                        if 'nvidia' in site['name'].lower():
-                            nvidia_get(site['url'], site['api'])
+                        html = selenium_get(site.get('url'))
+                    elif site.get('method') == Methods.GET_API:
+                        if 'nvidia' in site.get('name').lower():
+                            nvidia_get(site.get('url'), site.get('api'))
                         continue
                     else:
-                        html = urllib_get(site['url'])
+                        html = urllib_get(site.get('url'))
                 except Exception as e:
                     print("\t\tConnection failed...")
                     print("\t\t{}".format(e))
                     continue
-                keyword = site['keyword']
-                alert_on_found = site['alert']
+                keyword = site.get('keyword')
+                alert_on_found = site.get('alert')
                 index = html.upper().find(keyword.upper())
                 if alert_on_found and index != -1:
                     alert(site)
