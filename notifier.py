@@ -171,7 +171,7 @@ def nvidia_get(url, api_url):
 def is_test():
     try:
         if sys.argv[1] == 'test':
-            alert("https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/")
+            alert(sites[0])
             print("Test complete, if you received notification, you're good to go.")
             return True
     except:
