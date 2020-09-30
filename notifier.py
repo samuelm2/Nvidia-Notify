@@ -21,20 +21,6 @@ class Methods(str, Enum):
     GET_URLLIB = "GET_URLLIB"
     GET_API = "GET_API"
 
-
-'''
-    Adding a new website to check:
-
-    sites.json
-
-    [url]: url of the website you want to check
-    [api]: API URL for the site, if omitted; keyword is required
-    [keyword]: The substring that you're looking for in the html of the website
-    [method]: Set this to GET_SELENIUM, GET_URLLIB, or GET_API to choose which method is used to fetch data from the site. USE_SELENIUM is useful for jsx pages
-    [name]: A nickname for the alert to use. This is displayed in alerts.
-    [enabled]: check the site? true or false
-'''
-
 # Set up environment variables and constants. Do not modify this unless you know what you are doing!
 load_dotenv()
 USE_TWILIO = False
@@ -180,7 +166,7 @@ def is_test():
 
 def main():
     search_count = 0
-    
+
     exit() if is_test() else False
 
     while True:

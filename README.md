@@ -27,7 +27,7 @@ Simple, quick to set up stock notification bot for Nvidia 3080 that I used to ge
     - If running windows, use `win-requirements.txt` instead.
     - On some Linux/Mac systems, you may need to use `python3` and `pip3` instead of `python` and `pip`, respectively.
 5. You can open `notifier.py` in a text editor and modify the list of pages that get scanned.
-  
+
 ## How to Run
 
 ```
@@ -48,7 +48,7 @@ python notifier.py test
 
 ## MacOS Python3 Info
 
-MacOS typically has Python 2 installed on the path as `python` by default. If you do not have Python 3 on your system, 
+MacOS typically has Python 2 installed on the path as `python` by default. If you do not have Python 3 on your system,
 the easiest way to install is to get it from HomeBrew (https://brew.sh/)
 
 Once you have brew installed, you can install Python 3 by running this:
@@ -57,7 +57,7 @@ Once you have brew installed, you can install Python 3 by running this:
 brew install python3
 ```
 
-When installed in this way, you will normally need to run it as `python3` instead of `python` 
+When installed in this way, you will normally need to run it as `python3` instead of `python`
 
 ```
 python3 notifier.py
@@ -72,6 +72,38 @@ pip3 install -r requirements.txt
 
 ##### MacOS Gecko Driver Security
 
-The first time you run this script on a mac, the system will prevent you from using the gecko driver.  To allow this, open System Preferences > Security and Privacy and under the general tab, click the button to allow geckodriver to be run.  You will need to run the script at least once before you can do this.  The first time you run the script after allowing geckodriver the script will crash again, but it will not crash after that. 
+The first time you run this script on a mac, the system will prevent you from using the gecko driver.  To allow this, open System Preferences > Security and Privacy and under the general tab, click the button to allow geckodriver to be run.  You will need to run the script at least once before you can do this.  The first time you run the script after allowing geckodriver the script will crash again, but it will not crash after that.
 
-## Feel free to submit any PRs or issues!!  
+
+## Configuring the websites to check
+
+If you are in the mood you can change or add your own websites to check stock for.
+
+They are defined in a JSON file, named `sites.json`. It includes several of the most popular sites and searches.
+
+The `site.json` file can be found [here](https://github.com/samuelm2/Nvidia-Notify/blob/master/sites.json).
+
+| Field  | Value | Description  |
+|---|---|---|
+| url     | valid url | The url of the site, including the query string params specific to the site for narrowing results, specifiying a product number, specific filtering options, etc...
+| api     | valid url | The api url to use, this is specific to Nvidia.  The method `GET_API` is required
+| keyword | text | The keyword that you're looking for in the html of the website
+| alert   | true or false | If true, it will alert when the keyword is found in the html. If false, it will alert if the keyword is NOT found in the html
+| method  | GET_SELENIUM, GET_URLLIB, or GET_API | Which method is used to fetch data from the site.
+| name    | text | A nickname for the alert to use.
+| enabled | true or false | Whether the site will be checked. Useful for example, when testing your addition, and disabling the rest so you can quickly see the results.
+
+An example:
+
+```json
+  {
+    "url": "https://www.newegg.com/p/pl?d=rtx+3080&N=100007709%20601357247",
+    "keyword": "Add to cart",
+    "alert": true,
+    "method": "GET_URLLIB",
+    "name": "Newegg 3080",
+    "enabled": true
+  }
+```
+
+## Feel free to submit any PRs or issues!!
