@@ -85,7 +85,7 @@ The `site.json` file can be found [here](https://github.com/samuelm2/Nvidia-Noti
 
 | Field  | Value | Description  |
 |---|---|---|
-| url     | valid url | The url of the site, including the query string params specific to the site for narrowing results, specifiying a product number, specific filtering options, etc...
+| url     | valid url | The url of the site, including the query string params specific to the site for narrowing results, specifying a product number, specific filtering options, etc...
 | api     | valid url | The api url to use, this is specific to Nvidia.  The method `GET_API` is required
 | keyword | text | The keyword that you're looking for in the html of the website
 | alert   | true or false | If true, it will alert when the keyword is found in the html. If false, it will alert if the keyword is NOT found in the html
