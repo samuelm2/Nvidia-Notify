@@ -97,8 +97,12 @@ def os_notification(title, text):
     elif platform == PLT_WIN:
         toast.show_toast(title, text, duration=5, icon_path="icon.ico")
     elif platform == PLT_LIN:
-        # Feel free to add something here :)
-        pass
+        try:
+            icon_path = path.realpath('icon.ico')
+            system('notify-send "{}" "{}" -i {}'.format(title, text, icon_path))
+        except:
+            # No system support for notify-send
+            pass
 
 
 def sms_notification(url):
